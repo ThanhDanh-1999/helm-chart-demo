@@ -1,0 +1,38 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: my-app-testing
+  labels:
+    app.kubernetes.io/name: my-app-testing
+    app.kubernetes.io/instance: my-app-testing
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: my-app-testing
+      app.kubernetes.io/instance: my-app-testing
+  template:
+    metadata:
+      name: my-app
+      labels:
+        app.kubernetes.io/name: my-app-testing
+        app.kubernetes.io/instance: my-app-testing
+    spec:
+      imagePullSecrets:
+        - name: k8s-registry
+      containers:
+        - name: container-myapp
+          image: "danhnt/myapp-testing:v1.0.0"
+          imagePullPolicy: IfNotPresent
+          ports:
+            - name: http
+              containerPort: 8080
+              protocol: TCP
+          livenessProbe:
+            httpGet:
+              path: /
+              port: http
+          readinessProbe:
+            httpGet:
+              path: /
+              port: http

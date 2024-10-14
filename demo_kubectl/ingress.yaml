@@ -1,0 +1,18 @@
+apiVersion: networking.k8s.io/v1beta1
+kind: Ingress
+metadata:
+  name: my-app-testing
+  labels:
+    app.kubernetes.io/name: my-app-testing
+    app.kubernetes.io/instance: my-app-testing
+  annotations:
+    kubernetes.io/ingress.class: kong
+spec:
+  rules:
+    - host: myapp-testing.datatrend.io
+      http:
+        paths:
+          - path: /
+            backend:
+              serviceName: my-app-testing
+              servicePort: 8080
